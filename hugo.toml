@@ -1,0 +1,77 @@
+baseURL = "https://hexingtac.com/"
+languageCode = "zh-cn"
+defaultContentLanguage = "zh"
+title = "深圳市和兴防护科技有限公司"
+theme = "hexing"
+paginate = 12
+
+[params]
+  description = "专业军品出口代理 - 防弹装备、服装鞋靴、战术装备供应商"
+  descriptionEn = "Professional Military & Tactical Equipment Supplier"
+  logo = "/images/logo.jpg"
+  companyZh = "深圳市和兴防护科技有限公司"
+  companyEn = "Shenzhen HeXing Protection Tech. Co., Ltd."
+  email = "info@hexingtac.com"
+  phone = "+86 13402060841"
+  contactPerson = "Victor Yang"
+  addressZh = "深圳市光明区凤凰街道甲子塘社区同仁路52号 三环科技大厦A栋820"
+  addressEn = "R. 820, Building A, Sanhuan Technology Building, No. 52, Tongren Road, Jiazitang Community, Fenghuang Sub-district, Guangming District, Shenzhen City, Guangdong Province, China"
+  postCode = "518107"
+  primaryColor = "#1B5E20"
+  accentColor = "#D4A843"
+  oliveColor = "#558B2F"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[languages]
+  [languages.zh]
+    contentDir = "content/zh"
+    languageCode = "zh-cn"
+    languageName = "中文"
+    weight = 1
+    [languages.zh.menus]
+      [[languages.zh.menus.main]]
+        name = "首页"
+        url = "/"
+        weight = 1
+      [[languages.zh.menus.main]]
+        name = "产品中心"
+        url = "/products/"
+        weight = 2
+      [[languages.zh.menus.main]]
+        name = "关于我们"
+        url = "/about/"
+        weight = 3
+      [[languages.zh.menus.main]]
+        name = "联系我们"
+        url = "/contact/"
+        weight = 4
+  [languages.en]
+    contentDir = "content/en"
+    languageCode = "en-us"
+    languageName = "English"
+    weight = 2
+    [languages.en.menus]
+      [[languages.en.menus.main]]
+        name = "Home"
+        url = "/en/"
+        weight = 1
+      [[languages.en.menus.main]]
+        name = "Products"
+        url = "/en/products/"
+        weight = 2
+      [[languages.en.menus.main]]
+        name = "About Us"
+        url = "/en/about/"
+        weight = 3
+      [[languages.en.menus.main]]
+        name = "Contact"
+        url = "/en/contact/"
+        weight = 4
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]

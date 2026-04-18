@@ -1,0 +1,220 @@
+{{- define "main" -}}
+{{- $isZh := eq .Lang "zh" -}}
+
+{{- /* =========================================
+   HERO SECTION
+   ========================================= */ -}}
+<section id="hero" style="position:relative;min-height:600px;display:flex;align-items:center;background:linear-gradient(135deg, #1B5E20 0%, #2E7D32 30%, #558B2F 70%, #33691E 100%);overflow:hidden;">
+  {{- /* Decorative geometric shapes */ -}}
+  <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:rgba(212,168,67,0.08);border-radius:50%;"></div>
+  <div style="position:absolute;bottom:-150px;left:-100px;width:600px;height:600px;background:rgba(255,255,255,0.03);border-radius:50%;"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border:1px solid rgba(255,255,255,0.05);border-radius:50%;"></div>
+
+  <div class="container" style="position:relative;z-index:1;text-align:center;padding:80px 20px;">
+    {{- with .Params.heroTagline -}}
+      <h1 style="color:#fff;font-size:clamp(32px,5vw,56px);font-weight:800;margin:0 0 20px;line-height:1.2;text-shadow:0 2px 20px rgba(0,0,0,0.3);">
+        {{ . }}
+      </h1>
+    {{- else -}}
+      <h1 style="color:#fff;font-size:clamp(32px,5vw,56px);font-weight:800;margin:0 0 20px;line-height:1.2;text-shadow:0 2px 20px rgba(0,0,0,0.3);">
+        {{ if $isZh }}专业军用防护装备供应商{{ else }}Professional Military & Tactical Protection Equipment{{ end }}
+      </h1>
+    {{- end -}}
+
+    {{- with .Params.heroSubtitle -}}
+      <p style="color:rgba(255,255,255,0.9);font-size:clamp(16px,2vw,22px);max-width:700px;margin:0 auto 40px;line-height:1.6;">{{ . }}</p>
+    {{- else -}}
+      <p style="color:rgba(255,255,255,0.9);font-size:clamp(16px,2vw,22px);max-width:700px;margin:0 auto 40px;line-height:1.6;">
+        {{ if $isZh }}深圳市和兴防护科技有限公司 — 十余年专注防弹、防刺、战术装备的研发与制造，产品远销全球50+国家和地区。{{ else }}Shenzhen HeXing Protection Tech. Co., Ltd. — Over a decade of expertise in ballistic, stab-resistant, and tactical equipment, serving 50+ countries worldwide.{{ end }}
+      </p>
+    {{- end -}}
+
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="{{ if $isZh }}/products/{{ else }}/en/products/{{ end }}"
+         style="display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--accent);color:#fff;font-size:16px;font-weight:700;border-radius:8px;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;box-shadow:0 4px 15px rgba(212,168,67,0.4);">
+        {{ if $isZh }}浏览产品{{ else }}Browse Products{{ end }} →
+      </a>
+      <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}"
+         style="display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:transparent;color:#fff;font-size:16px;font-weight:600;border:2px solid rgba(255,255,255,0.5);border-radius:8px;text-decoration:none;transition:background 0.3s,border-color 0.3s;">
+        {{ if $isZh }}联系我们{{ else }}Contact Us{{ end }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{{- /* =========================================
+   PRODUCT CATEGORIES SECTION
+   ========================================= */ -}}
+{{- $categories := slice
+  (dict "icon" "🛡️" "titleZh" "防弹装备" "titleEn" "Ballistic Equipment" "descZh" "防弹头盔、防弹衣、防弹板" "descEn" "Bulletproof helmets, vests, and plates" "url" "/products/ballistic/")
+  (dict "icon" "🧥" "titleZh" "防护服装" "titleEn" "Protective Clothing" "descZh" "战术服装、防刺服、防割服" "descEn" "Tactical clothing, stab & cut resistant" "url" "/products/clothing/")
+  (dict "icon" "🏕️" "titleZh" "帐篷/箱包" "titleEn" "Tents & Bags" "descZh" "军用帐篷、战术背包、携行具" "descEn" "Military tents, tactical bags & packs" "url" "/products/tents-bags/")
+  (dict "icon" "🔭" "titleZh" "夜视装备" "titleEn" "Night Vision" "descZh" "夜视仪、红外热成像、瞄具" "descEn" "Night vision, thermal imaging, scopes" "url" "/products/night-vision/")
+  (dict "icon" "🚗" "titleZh" "防护车辆" "titleEn" "Armored Vehicles" "descZh" "防弹车、装甲车、车辆改装" "descEn" "Bulletproof & armored vehicles" "url" "/products/vehicles/")
+  (dict "icon" "🧵" "titleZh" "功能面料" "titleEn" "Technical Fabrics" "descZh" "芳纶、UHMWPE、防弹复合材料" "descEn" "Aramid, UHMWPE, ballistic composites" "url" "/products/fabrics/")
+-}}
+
+<section id="categories" style="padding:80px 20px;background:var(--bg-light);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:50px;">
+      <h2 style="font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--primary);margin:0 0 12px;">
+        {{ if $isZh }}产品分类{{ else }}Product Categories{{ end }}
+      </h2>
+      <div style="width:60px;height:4px;background:var(--accent);margin:0 auto 16px;border-radius:2px;"></div>
+      <p style="color:var(--text-muted);font-size:16px;max-width:600px;margin:0 auto;">
+        {{ if $isZh }}覆盖军用防护全领域，为全球客户提供一站式解决方案{{ else }}Comprehensive military protection solutions for global clients{{ end }}
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:24px;">
+      {{- range $categories -}}
+        {{- $title := cond $isZh .titleZh .titleEn -}}
+        {{- $desc := cond $isZh .descZh .descEn -}}
+        {{- $link := cond $isZh .url (print "/en" .url) -}}
+        <a href="{{ $link }}" style="display:block;background:#fff;border-radius:12px;padding:32px 28px;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;border:1px solid transparent;"
+           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 8px 30px rgba(27,94,32,0.15)';this.style.borderColor='var(--olive)';"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';this.style.borderColor='transparent';">
+          <div style="font-size:48px;margin-bottom:16px;">{{ .icon }}</div>
+          <h3 style="font-size:20px;font-weight:700;color:var(--primary);margin:0 0 10px;">{{ $title }}</h3>
+          <p style="color:var(--text-muted);font-size:14px;margin:0;line-height:1.6;">{{ $desc }}</p>
+          <span style="display:inline-block;margin-top:16px;color:var(--olive);font-weight:600;font-size:14px;">
+            {{ if $isZh }}了解更多 →{{ else }}Learn More →{{ end }}
+          </span>
+        </a>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+{{- /* =========================================
+   FEATURED PRODUCTS SECTION
+   ========================================= */ -}}
+<section id="featured" style="padding:80px 20px;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:50px;">
+      <h2 style="font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--primary);margin:0 0 12px;">
+        {{ if $isZh }}热门产品{{ else }}Featured Products{{ end }}
+      </h2>
+      <div style="width:60px;height:4px;background:var(--accent);margin:0 auto 16px;border-radius:2px;"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;">
+      {{- $products := where .Site.RegularPages "Params.featured" true -}}
+      {{- if not $products -}}
+        {{- $products = first 6 (where .Site.RegularPages "Section" "products") -}}
+      {{- end -}}
+      {{- range first 6 $products -}}
+        <a href="{{ .RelPermalink }}" style="display:block;background:#fff;border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;"
+           onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 25px rgba(0,0,0,0.12)';"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';">
+          {{- with .Params.image -}}
+            <div style="height:220px;overflow:hidden;background:var(--bg-light);">
+              <img src="{{ . | relURL }}" alt="{{ $.Title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+            </div>
+          {{- else -}}
+            <div style="height:220px;background:linear-gradient(135deg,var(--primary),var(--olive));display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:48px;opacity:0.5;">📦</span>
+            </div>
+          {{- end -}}
+          <div style="padding:20px;">
+            <h3 style="font-size:16px;font-weight:700;color:var(--primary);margin:0 0 8px;">{{ .Title }}</h3>
+            {{- with .Params.summary -}}
+              <p style="color:var(--text-muted);font-size:13px;margin:0;line-height:1.5;">{{ . }}</p>
+            {{- else -}}
+              <p style="color:var(--text-muted);font-size:13px;margin:0;line-height:1.5;">{{ .Summary | truncate 100 }}</p>
+            {{- end -}}
+            {{- with .Params.category -}}
+              <span style="display:inline-block;margin-top:10px;padding:4px 10px;background:rgba(85,139,47,0.1);color:var(--olive);font-size:12px;border-radius:4px;">{{ . }}</span>
+            {{- end -}}
+          </div>
+        </a>
+      {{- else -}}
+        {{- /* Placeholder when no products exist */ -}}
+        <div style="text-align:center;padding:40px;grid-column:1/-1;color:var(--text-muted);">
+          <p style="font-size:18px;">
+            {{ if $isZh }}产品内容即将上线...{{ else }}Products coming soon...{{ end }}
+          </p>
+          <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}" style="color:var(--accent);font-weight:600;">
+            {{ if $isZh }}咨询产品详情{{ else }}Inquire about products{{ end }}
+          </a>
+        </div>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+{{- /* =========================================
+   ABOUT TEASER SECTION
+   ========================================= */ -}}
+<section id="about-teaser" style="padding:80px 20px;background:linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #558B2F 100%);color:#fff;">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
+    {{- /* Left: Text */ -}}
+    <div>
+      <h2 style="font-size:clamp(24px,3vw,36px);font-weight:800;margin:0 0 20px;">
+        {{ if $isZh }}关于和兴{{ else }}About HeXing{{ end }}
+      </h2>
+      <div style="width:60px;height:4px;background:var(--accent);margin:0 0 24px;border-radius:2px;"></div>
+      <p style="color:rgba(255,255,255,0.9);line-height:1.8;font-size:16px;margin:0 0 24px;">
+        {{ if $isZh }}
+          深圳市和兴防护科技有限公司是一家专注于军用防护装备和战术装备研发、生产与出口的高科技企业。公司产品涵盖防弹装备、防护服装、军用帐篷、夜视设备等多个领域，已远销全球50多个国家和地区。
+        {{ else }}
+          Shenzhen HeXing Protection Tech. Co., Ltd. is a high-tech enterprise specializing in the R&D, production, and export of military protective equipment and tactical gear. Our products span ballistic equipment, protective clothing, military tents, night vision devices, and more, exported to 50+ countries worldwide.
+        {{ end }}
+      </p>
+      <a href="{{ if $isZh }}/about/{{ else }}/en/about/{{ end }}"
+         style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--accent);color:#fff;font-weight:700;border-radius:8px;text-decoration:none;transition:transform 0.3s;box-shadow:0 4px 15px rgba(212,168,67,0.3);">
+        {{ if $isZh }}了解更多 →{{ else }}Learn More →{{ end }}
+      </a>
+    </div>
+
+    {{- /* Right: Stats */ -}}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:12px;padding:28px;text-align:center;border:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:42px;font-weight:800;color:var(--accent);">15+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.8);margin-top:8px;">{{ if $isZh }}年行业经验{{ else }}Years Experience{{ end }}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:12px;padding:28px;text-align:center;border:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:42px;font-weight:800;color:var(--accent);">50+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.8);margin-top:8px;">{{ if $isZh }}出口国家{{ else }}Countries{{ end }}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:12px;padding:28px;text-align:center;border:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:42px;font-weight:800;color:var(--accent);">500+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.8);margin-top:8px;">{{ if $isZh }}产品型号{{ else }}Product Models{{ end }}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:12px;padding:28px;text-align:center;border:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:42px;font-weight:800;color:var(--accent);">200+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.8);margin-top:8px;">{{ if $isZh }}合作客户{{ else }}Clients{{ end }}</div>
+      </div>
+    </div>
+  </div>
+
+  {{- /* Responsive grid for about teaser */ -}}
+  <style>
+    @media (max-width: 768px) {
+      #about-teaser .container {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+      }
+    }
+  </style>
+</section>
+
+{{- /* =========================================
+   CTA / INQUIRY SECTION
+   ========================================= */ -}}
+<section id="cta" style="padding:60px 20px;background:var(--bg-light);text-align:center;">
+  <div class="container">
+    <h2 style="font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--primary);margin:0 0 16px;">
+      {{ if $isZh }}需要定制方案？{{ else }}Need a Custom Solution?{{ end }}
+    </h2>
+    <p style="color:var(--text-muted);font-size:16px;max-width:500px;margin:0 auto 30px;">
+      {{ if $isZh }}我们的专业团队可为您量身定制防护解决方案{{ else }}Our expert team can tailor protection solutions to your specific needs{{ end }}
+    </p>
+    <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}"
+       style="display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:var(--primary);color:#fff;font-size:16px;font-weight:700;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(27,94,32,0.3);transition:background 0.3s;">
+      ✉ {{ if $isZh }}发送询盘{{ else }}Send Inquiry{{ end }}
+    </a>
+  </div>
+</section>
+
+{{- end -}}

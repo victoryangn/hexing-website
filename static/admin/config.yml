@@ -1,0 +1,155 @@
+backend:
+  name: github
+  repo: hexingtac/hexing-website
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: static/images/products
+public_folder: /images/products
+
+locale: zh_Hans
+
+collections:
+  # ========== 中文产品 ==========
+  - name: products_zh
+    label: 产品管理（中文）
+    label_singular: 产品
+    folder: content/zh/products
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "产品标题", name: title, widget: string }
+      - { label: "产品描述", name: description, widget: text }
+      - { label: "发布日期", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD" }
+      - { label: "发布", name: draft, widget: boolean, default: false }
+      - { label: "产品图片", name: featured_image, widget: image, required: false, hint: "建议尺寸800x600" }
+      - label: "产品分类"
+        name: category
+        widget: select
+        options:
+          - { label: "防弹装备", value: "防弹装备" }
+          - { label: "服装鞋靴", value: "服装鞋靴" }
+          - { label: "帐篷背包", value: "帐篷背包" }
+          - { label: "夜视仪", value: "夜视仪" }
+          - { label: "军用车辆", value: "军用车辆" }
+          - { label: "面料纺织", value: "面料纺织" }
+      - { label: "标签", name: tags, widget: list, allow_add: true }
+      - { label: "价格", name: price, widget: string, default: "联系询价", required: false }
+      - label: "产品规格"
+        name: specs
+        widget: object
+        required: false
+        fields:
+          - { label: "规格项", name: protection_level, widget: string, required: false }
+          - { label: "材料", name: material, widget: string, required: false }
+          - { label: "重量", name: weight, widget: string, required: false }
+          - { label: "尺寸", name: sizes, widget: string, required: false }
+          - { label: "颜色", name: colors, widget: string, required: false }
+          - { label: "认证", name: certification, widget: string, required: false }
+          - { label: "保修", name: warranty, widget: string, required: false }
+      - { label: "产品详情", name: body, widget: markdown }
+
+  # ========== English Products ==========
+  - name: products_en
+    label: Products (English)
+    label_singular: Product
+    folder: content/en/products
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Product Title", name: title, widget: string }
+      - { label: "Description", name: description, widget: text }
+      - { label: "Date", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD" }
+      - { label: "Published", name: draft, widget: boolean, default: false }
+      - { label: "Product Image", name: featured_image, widget: image, required: false }
+      - label: "Category"
+        name: category
+        widget: select
+        options:
+          - { label: "Bulletproof Equipment", value: "Bulletproof Equipment" }
+          - { label: "Clothing & Footwear", value: "Clothing & Footwear" }
+          - { label: "Tents & Backpacks", value: "Tents & Backpacks" }
+          - { label: "Night Vision", value: "Night Vision" }
+          - { label: "Military Vehicles", value: "Military Vehicles" }
+          - { label: "Fabrics & Textiles", value: "Fabrics & Textiles" }
+      - { label: "Tags", name: tags, widget: list, allow_add: true }
+      - { label: "Price", name: price, widget: string, default: "Contact for Price", required: false }
+      - label: "Specifications"
+        name: specs
+        widget: object
+        required: false
+        fields:
+          - { label: "Protection Level", name: protection_level, widget: string, required: false }
+          - { label: "Material", name: material, widget: string, required: false }
+          - { label: "Weight", name: weight, widget: string, required: false }
+          - { label: "Sizes", name: sizes, widget: string, required: false }
+          - { label: "Colors", name: colors, widget: string, required: false }
+          - { label: "Certification", name: certification, widget: string, required: false }
+          - { label: "Warranty", name: warranty, widget: string, required: false }
+      - { label: "Product Details", name: body, widget: markdown }
+
+  # ========== 中文页面 ==========
+  - name: pages_zh
+    label: 页面管理（中文）
+    files:
+      - label: "首页"
+        name: home_zh
+        file: content/zh/_index.md
+        fields:
+          - { label: "标题", name: title, widget: string }
+          - { label: "描述", name: description, widget: text }
+          - { label: "内容", name: body, widget: markdown }
+      - label: "关于我们"
+        name: about_zh
+        file: content/zh/about/_index.md
+        fields:
+          - { label: "标题", name: title, widget: string }
+          - { label: "描述", name: description, widget: text }
+          - { label: "内容", name: body, widget: markdown }
+      - label: "联系我们"
+        name: contact_zh
+        file: content/zh/contact/_index.md
+        fields:
+          - { label: "标题", name: title, widget: string }
+          - { label: "描述", name: description, widget: text }
+          - { label: "内容", name: body, widget: markdown }
+
+  # ========== English Pages ==========
+  - name: pages_en
+    label: Pages (English)
+    files:
+      - label: "Homepage"
+        name: home_en
+        file: content/en/_index.md
+        fields:
+          - { label: "Title", name: title, widget: string }
+          - { label: "Description", name: description, widget: text }
+          - { label: "Content", name: body, widget: markdown }
+      - label: "About Us"
+        name: about_en
+        file: content/en/about/_index.md
+        fields:
+          - { label: "Title", name: title, widget: string }
+          - { label: "Description", name: description, widget: text }
+          - { label: "Content", name: body, widget: markdown }
+      - label: "Contact"
+        name: contact_en
+        file: content/en/contact/_index.md
+        fields:
+          - { label: "Title", name: title, widget: string }
+          - { label: "Description", name: description, widget: text }
+          - { label: "Content", name: body, widget: markdown }
+
+  # ========== 图片管理 ==========
+  - name: media
+    label: 图片管理
+    media_folder: static/images
+    public_folder: /images
+    files: []

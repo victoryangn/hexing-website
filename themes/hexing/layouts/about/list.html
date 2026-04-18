@@ -1,0 +1,210 @@
+{{- define "main" -}}
+{{- $isZh := eq .Lang "zh" -}}
+
+{{- /* Page Header */ -}}
+<section style="background:linear-gradient(135deg, #1B5E20, #2E7D32, #558B2F);padding:80px 20px;color:#fff;text-align:center;">
+  <div class="container">
+    <h1 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0;">
+      {{ if $isZh }}关于和兴{{ else }}About HeXing{{ end }}
+    </h1>
+    <div style="width:60px;height:4px;background:var(--accent);margin:20px auto;border-radius:2px;"></div>
+    <p style="color:rgba(255,255,255,0.9);font-size:18px;max-width:700px;margin:0 auto;line-height:1.6;">
+      {{ if $isZh }}深圳市和兴防护科技有限公司 — 全球信赖的军用防护装备合作伙伴{{ else }}Shenzhen HeXing Protection Tech. Co., Ltd. — Your Trusted Partner in Military Protection{{ end }}
+    </p>
+  </div>
+</section>
+
+{{- /* =========================================
+   Company Introduction
+   ========================================= */ -}}
+<section style="padding:80px 20px;">
+  <div class="container" style="max-width:900px;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <h2 style="font-size:clamp(24px,3vw,32px);font-weight:800;color:var(--primary);margin:0 0 12px;">
+        {{ if $isZh }}公司简介{{ else }}Company Introduction{{ end }}
+      </h2>
+      <div style="width:60px;height:4px;background:var(--accent);margin:0 auto;border-radius:2px;"></div>
+    </div>
+
+    <div style="font-size:16px;line-height:2;color:var(--text-dark);">
+      {{- with .Content -}}
+        {{ . }}
+      {{- else -}}
+        {{- if $isZh -}}
+          <p>深圳市和兴防护科技有限公司（简称"和兴"）成立于深圳，是一家专注于军用防护装备和战术装备研发、生产与出口的高科技企业。</p>
+          <p>公司产品线涵盖防弹头盔、防弹衣、防弹板、防刺服、战术服装、军用帐篷、战术背包、夜视设备、防弹车辆以及高性能防护面料等多个领域。凭借卓越的产品品质和完善的售后服务，和兴的产品已远销全球50多个国家和地区，赢得了各国军警部门和安防机构的广泛认可。</p>
+          <p>公司始终坚持"品质第一、客户至上"的经营理念，严格按照国际质量管理体系运作，所有产品均通过相关国际认证。我们拥有一支经验丰富的研发团队，可根据客户需求提供定制化的防护解决方案。</p>
+        {{- else -}}
+          <p>Shenzhen HeXing Protection Tech. Co., Ltd. ("HeXing") is a high-tech enterprise based in Shenzhen, China, specializing in the R&D, production, and export of military protective equipment and tactical gear.</p>
+          <p>Our product line covers bulletproof helmets, body armor, ballistic plates, stab-resistant vests, tactical clothing, military tents, tactical backpacks, night vision devices, armored vehicles, and high-performance protective fabrics. With superior product quality and comprehensive after-sales service, HeXing products have been exported to over 50 countries and regions worldwide, earning wide recognition from military, police, and security agencies.</p>
+          <p>Adhering to the philosophy of "Quality First, Customer Supreme," we operate under strict international quality management systems, and all products carry relevant international certifications. Our experienced R&D team provides customized protection solutions to meet specific client requirements.</p>
+        {{- end -}}
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+{{- /* =========================================
+   Stats Row
+   ========================================= */ -}}
+<section style="padding:60px 20px;background:var(--bg-light);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:24px;text-align:center;">
+      <div style="background:#fff;border-radius:12px;padding:40px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:52px;font-weight:800;color:var(--primary);line-height:1;">15+</div>
+        <div style="margin-top:12px;font-size:15px;font-weight:600;color:var(--text-dark);">
+          {{ if $isZh }}年行业经验{{ else }}Years Experience{{ end }}
+        </div>
+        <div style="margin-top:6px;font-size:13px;color:var(--text-muted);">
+          {{ if $isZh }}深耕防护领域{{ else }}Deep in protection field{{ end }}
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:40px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:52px;font-weight:800;color:var(--olive);line-height:1;">50+</div>
+        <div style="margin-top:12px;font-size:15px;font-weight:600;color:var(--text-dark);">
+          {{ if $isZh }}出口国家{{ else }}Export Countries{{ end }}
+        </div>
+        <div style="margin-top:6px;font-size:13px;color:var(--text-muted);">
+          {{ if $isZh }}覆盖六大洲{{ else }}Across 6 continents{{ end }}
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:40px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:52px;font-weight:800;color:var(--accent);line-height:1;">500+</div>
+        <div style="margin-top:12px;font-size:15px;font-weight:600;color:var(--text-dark);">
+          {{ if $isZh }}产品型号{{ else }}Product Models{{ end }}
+        </div>
+        <div style="margin-top:6px;font-size:13px;color:var(--text-muted);">
+          {{ if $isZh }}持续创新升级{{ else }}Continuous innovation{{ end }}
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:40px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:52px;font-weight:800;color:var(--primary);line-height:1;">200+</div>
+        <div style="margin-top:12px;font-size:15px;font-weight:600;color:var(--text-dark);">
+          {{ if $isZh }}合作客户{{ else }}Trusted Clients{{ end }}
+        </div>
+        <div style="margin-top:6px;font-size:13px;color:var(--text-muted);">
+          {{ if $isZh }}长期稳定合作{{ else }}Long-term partnerships{{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @media (max-width: 768px) {
+      #stats .container > div,
+      section:nth-of-type(2) .container > div {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 480px) {
+      #stats .container > div,
+      section:nth-of-type(2) .container > div {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</section>
+
+{{- /* =========================================
+   Core Values / Team Values
+   ========================================= */ -}}
+<section style="padding:80px 20px;">
+  <div class="container" style="max-width:1000px;">
+    <div style="text-align:center;margin-bottom:50px;">
+      <h2 style="font-size:clamp(24px,3vw,32px);font-weight:800;color:var(--primary);margin:0 0 12px;">
+        {{ if $isZh }}核心价值观{{ else }}Core Values{{ end }}
+      </h2>
+      <div style="width:60px;height:4px;background:var(--accent);margin:0 auto;border-radius:2px;"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:32px;">
+      {{- /* Value 1 */ -}}
+      <div style="text-align:center;padding:32px 24px;">
+        <div style="width:80px;height:80px;margin:0 auto 20px;background:rgba(27,94,32,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;">
+          🛡️
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 10px;">
+          {{ if $isZh }}品质为本{{ else }}Quality First{{ end }}
+        </h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">
+          {{ if $isZh }}严格执行国际质量标准，所有产品均通过NIJ、ISO等权威认证，确保每一件产品的可靠性与安全性。{{ else }}Strictly adhering to international quality standards. All products carry NIJ, ISO, and other authoritative certifications to ensure reliability and safety.{{ end }}
+        </p>
+      </div>
+
+      {{- /* Value 2 */ -}}
+      <div style="text-align:center;padding:32px 24px;">
+        <div style="width:80px;height:80px;margin:0 auto 20px;background:rgba(85,139,47,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;">
+          🔬
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 10px;">
+          {{ if $isZh }}技术创新{{ else }}Innovation{{ end }}
+        </h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">
+          {{ if $isZh }}持续投入研发，跟踪前沿防护技术，不断推出更轻、更强、更舒适的新一代防护产品。{{ else }}Continuous R&D investment, tracking cutting-edge protection technology, and launching lighter, stronger, and more comfortable next-gen protection products.{{ end }}
+        </p>
+      </div>
+
+      {{- /* Value 3 */ -}}
+      <div style="text-align:center;padding:32px 24px;">
+        <div style="width:80px;height:80px;margin:0 auto 20px;background:rgba(212,168,67,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;">
+          🤝
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 10px;">
+          {{ if $isZh }}客户至上{{ else }}Client Focus{{ end }}
+        </h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">
+          {{ if $isZh }}深度理解客户需求，提供从产品设计到交付的全流程定制服务，建立长期共赢合作关系。{{ else }}Deep understanding of client needs, providing end-to-end customized services from design to delivery, building long-term win-win partnerships.{{ end }}
+        </p>
+      </div>
+
+      {{- /* Value 4 */ -}}
+      <div style="text-align:center;padding:32px 24px;">
+        <div style="width:80px;height:80px;margin:0 auto 20px;background:rgba(27,94,32,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;">
+          🌍
+        </div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 10px;">
+          {{ if $isZh }}全球服务{{ else }}Global Service{{ end }}
+        </h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">
+          {{ if $isZh }}服务网络覆盖全球，多语言团队提供及时专业的售前售后支持，确保全球客户的满意体验。{{ else }}Worldwide service network with multilingual teams providing timely and professional pre-sales and after-sales support for global client satisfaction.{{ end }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{- /* =========================================
+   Certifications / Trust Section
+   ========================================= */ -}}
+<section style="padding:60px 20px;background:var(--bg-light);text-align:center;">
+  <div class="container">
+    <h2 style="font-size:clamp(20px,3vw,28px);font-weight:700;color:var(--primary);margin:0 0 24px;">
+      {{ if $isZh }}资质认证{{ else }}Certifications & Compliance{{ end }}
+    </h2>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;">
+      {{- range slice "NIJ Standard" "ISO 9001" "CE Certification" "ISO 14001" "BSCI Audit" -}}
+        <div style="padding:14px 24px;background:#fff;border-radius:8px;font-size:14px;font-weight:600;color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid rgba(27,94,32,0.1);">
+          ✓ {{ . }}
+        </div>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+
+{{- /* CTA */ -}}
+<section style="padding:60px 20px;text-align:center;background:linear-gradient(135deg, #1B5E20, #558B2F);color:#fff;">
+  <div class="container">
+    <h2 style="font-size:clamp(22px,3vw,32px);font-weight:800;margin:0 0 16px;">
+      {{ if $isZh }}期待与您合作{{ else }}Let's Work Together{{ end }}
+    </h2>
+    <p style="color:rgba(255,255,255,0.85);font-size:16px;max-width:500px;margin:0 auto 30px;">
+      {{ if $isZh }}无论您有任何防护装备需求，我们随时准备为您提供专业支持{{ else }}Whatever your protection equipment needs, we're ready to provide professional support{{ end }}
+    </p>
+    <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}"
+       style="display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:var(--accent);color:#fff;font-size:16px;font-weight:700;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(212,168,67,0.4);">
+      {{ if $isZh }}联系我们 →{{ else }}Contact Us →{{ end }}
+    </a>
+  </div>
+</section>
+
+{{- end -}}

@@ -1,0 +1,197 @@
+{{- define "main" -}}
+{{- $isZh := eq .Lang "zh" -}}
+
+{{- /* Page Header */ -}}
+<section style="background:linear-gradient(135deg, #1B5E20, #2E7D32, #558B2F);padding:60px 20px;color:#fff;">
+  <div class="container">
+    {{- /* Breadcrumb */ -}}
+    <nav aria-label="breadcrumb" style="margin-bottom:16px;">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:14px;color:rgba(255,255,255,0.7);flex-wrap:wrap;">
+        <li><a href="{{ .Site.Home.RelPermalink }}" style="color:rgba(255,255,255,0.7);text-decoration:none;">
+          {{ if $isZh }}首页{{ else }}Home{{ end }}
+        </a></li>
+        <li style="color:rgba(255,255,255,0.5);">/</li>
+        {{- with .Parent -}}
+          {{- if ne . .Site.Home -}}
+            <li><a href="{{ .RelPermalink }}" style="color:rgba(255,255,255,0.7);text-decoration:none;">{{ .Title }}</a></li>
+            <li style="color:rgba(255,255,255,0.5);">/</li>
+          {{- end -}}
+        {{- end -}}
+        <li style="color:#fff;">{{ .Title }}</li>
+      </ol>
+    </nav>
+    <h1 style="font-size:clamp(24px,4vw,38px);font-weight:800;margin:0;">{{ .Title }}</h1>
+    {{- with .Params.category -}}
+      <span style="display:inline-block;margin-top:12px;padding:4px 14px;background:rgba(255,255,255,0.2);border-radius:20px;font-size:13px;font-weight:600;">
+        {{ . }}
+      </span>
+    {{- end -}}
+  </div>
+</section>
+
+{{- /* Product Detail Section */ -}}
+<section style="padding:60px 20px;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+
+      {{- /* =========================================
+           LEFT COLUMN: Image Gallery
+           ========================================= */ -}}
+      <div class="product-gallery">
+        {{- /* Main Image */ -}}
+        {{- $mainImage := "" -}}
+        {{- with .Params.images -}}
+          {{- $mainImage = index . 0 -}}
+        {{- else -}}
+          {{- with .Params.image -}}
+            {{- $mainImage = . -}}
+          {{- end -}}
+        {{- end -}}
+
+        <div id="main-image" style="border-radius:12px;overflow:hidden;background:var(--bg-light);aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid #eee;">
+          {{- if $mainImage -}}
+            <img src="{{ $mainImage | relURL }}" alt="{{ .Title }}" id="gallery-main"
+                 style="width:100%;height:100%;object-fit:contain;padding:20px;">
+          {{- else -}}
+            <div style="text-align:center;">
+              <span style="font-size:80px;display:block;opacity:0.3;">📦</span>
+              <p style="color:var(--text-muted);">{{ if $isZh }}暂无图片{{ else }}No image available{{ end }}</p>
+            </div>
+          {{- end -}}
+        </div>
+
+        {{- /* Thumbnail Gallery */ -}}
+        {{- with .Params.images -}}
+          {{- if gt (len .) 1 -}}
+            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+              {{- range . -}}
+                <button onclick="document.getElementById('gallery-main').src='{{ . | relURL }}';"
+                        style="width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid #eee;cursor:pointer;padding:0;background:var(--bg-light);transition:border-color 0.2s;"
+                        onmouseover="this.style.borderColor='var(--olive)'"
+                        onmouseout="this.style.borderColor='#eee'">
+                  <img src="{{ . | relURL }}" alt="Thumbnail" style="width:100%;height:100%;object-fit:cover;">
+                </button>
+              {{- end -}}
+            </div>
+          {{- end -}}
+        {{- end -}}
+      </div>
+
+      {{- /* =========================================
+           RIGHT COLUMN: Product Info
+           ========================================= */ -}}
+      <div class="product-info">
+        {{- /* Product Title & Category */ -}}
+        <div style="margin-bottom:24px;">
+          {{- with .Params.category -}}
+            <span style="display:inline-block;padding:4px 12px;background:rgba(85,139,47,0.1);color:var(--olive);font-size:13px;font-weight:600;border-radius:4px;margin-bottom:12px;">
+              {{ . }}
+            </span>
+          {{- end -}}
+          <h2 style="font-size:28px;font-weight:800;color:var(--primary);margin:0;">{{ .Title }}</h2>
+          {{- with .Params.subtitle -}}
+            <p style="color:var(--text-muted);font-size:15px;margin:6px 0 0;">{{ . }}</p>
+          {{- end -}}
+        </div>
+
+        {{- /* Price Range */ -}}
+        {{- with .Params.priceRange -}}
+          <div style="padding:16px;background:rgba(212,168,67,0.1);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;margin-bottom:24px;">
+            <span style="font-size:14px;color:var(--text-muted);">{{ if $isZh }}参考价格：{{ else }}Price Range: {{ end }}</span>
+            <span style="font-size:20px;font-weight:700;color:var(--accent);">{{ . }}</span>
+          </div>
+        {{- end -}}
+
+        {{- /* Description */ -}}
+        {{- with .Params.summary -}}
+          <p style="font-size:16px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</p>
+        {{- end -}}
+        {{- with .Content -}}
+          <div style="font-size:15px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</div>
+        {{- end -}}
+
+        {{- /* =========================================
+             Specifications Table
+             ========================================= */ -}}
+        {{- with .Params.specs -}}
+          <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent);">
+              {{ if $isZh }}产品规格{{ else }}Specifications{{ end }}
+            </h3>
+            <table style="width:100%;border-collapse:collapse;font-size:14px;">
+              {{- range . -}}
+                <tr style="border-bottom:1px solid #f0f0f0;">
+                  <td style="padding:12px 16px;font-weight:600;color:var(--text-dark);background:var(--bg-light);width:40%;white-space:nowrap;">{{ index . 0 }}</td>
+                  <td style="padding:12px 16px;color:var(--text-muted);">{{ index . 1 }}</td>
+                </tr>
+              {{- end -}}
+            </table>
+          </div>
+        {{- end -}}
+
+        {{- /* Features List */ -}}
+        {{- with .Params.features -}}
+          <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent);">
+              {{ if $isZh }}产品特点{{ else }}Key Features{{ end }}
+            </h3>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              {{- range . -}}
+                <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.6;color:var(--text-dark);">
+                  <span style="color:var(--olive);font-weight:bold;margin-top:2px;">✓</span>
+                  {{ . }}
+                </li>
+              {{- end -}}
+            </ul>
+          </div>
+        {{- end -}}
+
+        {{- /* Tags */ -}}
+        {{- with .Params.tags -}}
+          <div style="margin-bottom:32px;display:flex;flex-wrap:wrap;gap:8px;">
+            {{- range . -}}
+              <span style="padding:4px 12px;background:rgba(27,94,32,0.06);color:var(--primary);font-size:12px;border-radius:20px;border:1px solid rgba(27,94,32,0.15);">
+                {{ . }}
+              </span>
+            {{- end -}}
+          </div>
+        {{- end -}}
+
+        {{- /* =========================================
+             Inquiry Button
+             ========================================= */ -}}
+        <div style="padding:24px;background:var(--bg-light);border-radius:12px;border:1px solid #e8e8e8;">
+          <p style="margin:0 0 16px;font-size:15px;font-weight:600;color:var(--text-dark);">
+            {{ if $isZh }}对此产品感兴趣？{{ else }}Interested in this product?{{ end }}
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}?product={{ .Title | urlquery }}"
+               style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--primary);color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(27,94,32,0.3);transition:background 0.3s;">
+              ✉ {{ if $isZh }}发送询盘{{ else }}Send Inquiry{{ end }}
+            </a>
+            {{- with .Site.Params.whatsapp -}}
+              <a href="https://wa.me/{{ . }}?text={{ printf "Hi, I'm interested in: %s" $.Title | urlquery }}" target="_blank" rel="noopener"
+                 style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#25D366;color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(37,211,102,0.3);">
+                💬 WhatsApp
+              </a>
+            {{- end -}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{- /* Responsive styles */ -}}
+<style>
+  @media (max-width: 768px) {
+    .product-gallery, .product-info {
+      grid-column: 1 / -1;
+    }
+    section .container > div {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{{- end -}}

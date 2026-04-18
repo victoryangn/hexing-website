@@ -1,0 +1,113 @@
+{{- define "main" -}}
+{{- $isZh := eq .Lang "zh" -}}
+
+{{- /* Page Header with Breadcrumb Background */ -}}
+<section style="background:linear-gradient(135deg, #1B5E20, #2E7D32, #558B2F);padding:60px 20px;color:#fff;">
+  <div class="container">
+    {{- /* Breadcrumb */ -}}
+    <nav aria-label="breadcrumb" style="margin-bottom:16px;">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:14px;color:rgba(255,255,255,0.7);">
+        <li><a href="{{ .Site.Home.RelPermalink }}" style="color:rgba(255,255,255,0.7);text-decoration:none;">
+          {{ if $isZh }}首页{{ else }}Home{{ end }}
+        </a></li>
+        <li style="color:rgba(255,255,255,0.5);">/</li>
+        <li style="color:#fff;">{{ .Title }}</li>
+      </ol>
+    </nav>
+    <h1 style="font-size:clamp(28px,4vw,42px);font-weight:800;margin:0;">{{ .Title }}</h1>
+    {{- with .Description -}}
+      <p style="color:rgba(255,255,255,0.85);font-size:16px;margin:12px 0 0;max-width:600px;">{{ . }}</p>
+    {{- end -}}
+  </div>
+</section>
+
+{{- /* Content + Product Grid */ -}}
+<section style="padding:60px 20px;">
+  <div class="container">
+    {{- /* Optional page content above the list */ -}}
+    {{- with .Content -}}
+      <div style="margin-bottom:40px;line-height:1.8;font-size:16px;color:var(--text-dark);">
+        {{ . }}
+      </div>
+    {{- end -}}
+
+    {{- /* Product Grid */ -}}
+    {{- $pages := .Pages -}}
+    {{- if $pages -}}
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;">
+        {{- range $pages -}}
+          <article class="product-card" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;border:1px solid #eee;">
+            <a href="{{ .RelPermalink }}" style="text-decoration:none;color:inherit;display:block;">
+              {{- /* Card Image */ -}}
+              {{- with .Params.image -}}
+                <div style="height:220px;overflow:hidden;background:var(--bg-light);">
+                  <img src="{{ . | relURL }}" alt="{{ $.Title }}" loading="lazy"
+                       style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;">
+                </div>
+              {{- else -}}
+                <div style="height:220px;background:linear-gradient(135deg,var(--primary),var(--olive));display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:48px;opacity:0.4;">📦</span>
+                </div>
+              {{- end -}}
+
+              {{- /* Card Body */ -}}
+              <div style="padding:20px;">
+                {{- /* Category Tags */ -}}
+                {{- with .Params.category -}}
+                  <span style="display:inline-block;padding:3px 10px;background:rgba(85,139,47,0.1);color:var(--olive);font-size:12px;font-weight:600;border-radius:4px;margin-bottom:10px;">
+                    {{ . }}
+                  </span>
+                {{- end -}}
+                {{- with .Params.tags -}}
+                  {{- range first 2 . -}}
+                    <span style="display:inline-block;padding:3px 8px;background:rgba(27,94,32,0.06);color:var(--primary);font-size:11px;border-radius:3px;margin-left:4px;">
+                      {{ . }}
+                    </span>
+                  {{- end -}}
+                {{- end -}}
+
+                <h3 style="font-size:17px;font-weight:700;color:var(--primary);margin:10px 0 8px;line-height:1.4;">{{ .Title }}</h3>
+
+                {{- with .Params.summary -}}
+                  <p style="color:var(--text-muted);font-size:13px;margin:0;line-height:1.5;">{{ . }}</p>
+                {{- else -}}
+                  <p style="color:var(--text-muted);font-size:13px;margin:0;line-height:1.5;">{{ .Summary | truncate 100 }}</p>
+                {{- end -}}
+
+                {{- /* Price hint if available */ -}}
+                {{- with .Params.priceRange -}}
+                  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f0;font-size:14px;font-weight:600;color:var(--accent);">{{ . }}</div>
+                {{- end -}}
+              </div>
+            </a>
+          </article>
+        {{- end -}}
+      </div>
+
+      {{- /* Pagination */ -}}
+      {{- template "_internal/pagination.html" . -}}
+    {{- else -}}
+      <div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+        <p style="font-size:48px;margin:0 0 16px;">📋</p>
+        <p style="font-size:18px;margin:0 0 20px;">
+          {{ if $isZh }}暂无产品内容{{ else }}No products found{{ end }}
+        </p>
+        <a href="{{ .Site.Home.RelPermalink }}" style="color:var(--primary);font-weight:600;">
+          ← {{ if $isZh }}返回首页{{ else }}Back to Home{{ end }}
+        </a>
+      </div>
+    {{- end -}}
+  </div>
+</section>
+
+<style>
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  }
+  .product-card img:hover {
+    transform: scale(1.05);
+  }
+</style>
+
+{{- end -}}

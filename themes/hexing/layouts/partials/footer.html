@@ -1,0 +1,94 @@
+{{- $companyName := cond (eq .Lang "zh") (.Site.Params.companyZh | default "深圳市和兴防护科技有限公司") (.Site.Params.companyEn | default "Shenzhen HeXing Protection Tech. Co., Ltd.") -}}
+{{- $address := cond (eq .Lang "zh") (.Site.Params.addressZh | default "广东省深圳市") (.Site.Params.addressEn | default "Shenzhen, Guangdong, China") -}}
+{{- $email := .Site.Params.email | default "info@hexing-protection.com" -}}
+{{- $phone := .Site.Params.phone | default "+86-755-00000000" -}}
+{{- $year := now.Year -}}
+
+<footer style="background:var(--primary);color:#fff;margin-top:60px;">
+  {{- /* Main Footer Content */ -}}
+  <div class="container" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:40px;padding:60px 20px 40px;">
+
+    {{- /* Column 1: Company Info */ -}}
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        {{- if .Site.Params.logo -}}
+          <img src="{{ .Site.Params.logo | relURL }}" alt="Logo" style="height:40px;filter:brightness(0) invert(1);">
+        {{- else -}}
+          <div style="width:40px;height:40px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;">HX</div>
+        {{- end -}}
+        <h3 style="margin:0;font-size:18px;font-weight:700;color:#fff;">{{ $companyName }}</h3>
+      </div>
+      <p style="color:rgba(255,255,255,0.8);line-height:1.8;font-size:14px;margin:0 0 16px;">
+        {{- if eq .Lang "zh" -}}
+          专注于军用防护装备、战术装备及户外防护用品的研发、生产与出口，服务全球客户。
+        {{- else -}}
+          Specialized in R&D, manufacturing, and export of military protective equipment, tactical gear, and outdoor protection products worldwide.
+        {{- end -}}
+      </p>
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.6;">
+        📍 {{ $address }}
+        {{- with .Site.Params.postCode }}<br>{{ . }}{{ end -}}
+      </p>
+    </div>
+
+    {{- /* Column 2: Quick Links */ -}}
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin:0 0 20px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">
+        {{ if eq .Lang "zh" }}快速链接{{ else }}Quick Links{{ end }}
+      </h3>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+        {{- range .Site.Menus.main -}}
+          <li>
+            <a href="{{ .URL }}" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;transition:color 0.3s,padding-left 0.3s;display:block;">
+              {{- .Name -}}
+            </a>
+          </li>
+        {{- end -}}
+      </ul>
+    </div>
+
+    {{- /* Column 3: Contact Info */ -}}
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin:0 0 20px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">
+        {{ if eq .Lang "zh" }}联系我们{{ else }}Contact Us{{ end }}
+      </h3>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <a href="mailto:{{ $email }}" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:10px;">
+          <span style="width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">✉</span>
+          {{ $email }}
+        </a>
+        <a href="tel:{{ $phone }}" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:10px;">
+          <span style="width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">📞</span>
+          {{ $phone }}
+        </a>
+        {{- with .Site.Params.contactPerson -}}
+          <div style="color:rgba(255,255,255,0.8);font-size:14px;display:flex;align-items:center;gap:10px;">
+            <span style="width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">👤</span>
+            {{ . }}
+          </div>
+        {{- end -}}
+        {{- with .Site.Params.whatsapp -}}
+          <a href="https://wa.me/{{ . }}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:10px;">
+            <span style="width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">💬</span>
+            WhatsApp: {{ . }}
+          </a>
+        {{- end -}}
+      </div>
+    </div>
+  </div>
+
+  {{- /* Copyright Bar */ -}}
+  <div style="border-top:1px solid rgba(255,255,255,0.15);padding:20px;text-align:center;">
+    <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);">
+      © {{ $year }} {{ $companyName }}.
+      {{ if eq .Lang "zh" }}版权所有{{ else }}All rights reserved{{ end }}.
+    </p>
+  </div>
+</footer>
+
+<style>
+  footer a:hover {
+    color: var(--accent) !important;
+    padding-left: 4px;
+  }
+</style>
