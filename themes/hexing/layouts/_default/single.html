@@ -107,7 +107,8 @@
           <p style="font-size:16px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</p>
         {{- end -}}
         {{- with .Content -}}
-          <div style="font-size:15px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</div>
+          <div class="product-content" style="font-size:15px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</div>
+          <style>.product-content h2[id="产品规格"],.product-content h2[id="产品规格"]+p,.product-content h2[id="specifications"],.product-content h2[id="specifications"]+p{display:none}</style>
         {{- end -}}
 
         {{- /* =========================================
@@ -151,7 +152,7 @@
           var el = document.getElementById('specs-table');
           if (!el) return;
           var raw = el.getAttribute('data-specs') || '';
-          raw = raw.replace(/^"|"$/g, '');
+          raw = raw.replace(/^"|"$/g, '').replace(/\\n/g, '');
           if (!raw || raw === '详情请咨询' || raw === 'Contact for details') {
             el.innerHTML = '<div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;color:var(--text-muted);">' + raw + '</div>';
             return;
