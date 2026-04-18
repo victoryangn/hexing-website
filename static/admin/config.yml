@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: hexingtac/hexing-website
+  repo: victoryangn/hexing-website
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  auth_type: pkce
+  app_id: "decap-cms"
 
 media_folder: static/images/products
 public_folder: /images/products

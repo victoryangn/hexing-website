@@ -174,6 +174,35 @@
             '材质/工艺','材质','尺寸','颜色','尺码','配件','保险','交期',
             'NIJ等级','防护等级','型号','视窗尺寸','视窗','前中长','后中长'
           ];
+          // Translation map for English pages
+          var translations = {
+            '材质':'Material','材质/工艺':'Material / Process','尺寸':'Size','颜色':'Color','尺码':'Size',
+            '配件':'Accessories','保险':'Insurance','交期':'Lead Time','重量':'Weight','重量KGS':'Weight (KGS)',
+            '重量KG':'Weight (KG)','重量/块':'Weight/pc','厚度mm':'Thickness (mm)','厚度':'Thickness',
+            '防弹材质':'Ballistic Material','防弹等级':'Protection Level','防弹面积㎡':'Ballistic Area (㎡)',
+            '防弹面积':'Ballistic Area','防护面积':'Protection Area','防弹层材质':'Ballistic Layer Material',
+            '防刺层材质':'Stab-resistant Material','防刺等级':'Stab Resistance Level',
+            '执行标准':'Standard','保质期':'Shelf Life','喷漆工艺':'Painting Process',
+            '头围尺寸':'Head Circumference','盾体展开尺寸':'Shield Expanded Size',
+            '盾体折叠尺寸':'Shield Folded Size','盾体展开':'Shield Expanded','盾体折叠':'Shield Folded',
+            '盾体':'Shield Body','视窗尺寸':'Window Size','视窗':'View Window','观察窗':'Observation Window',
+            '前中长':'Front Length','后中长':'Back Length','肩宽':'Shoulder Width','肩宽cm':'Shoulder Width (cm)',
+            '腰围可调节cm':'Waist Adjustable (cm)',
+            '单件装箱尺寸/外套':'Packing Size (Single)','大批量装箱尺寸/外套':'Packing Size (Bulk)',
+            '单件装箱尺寸':'Packing Size (Single)','大批量装箱尺寸':'Packing Size (Bulk)',
+            '外套材质':'Outer Material','产品尺寸':'Product Size','面屏防弹等级':'Visor Ballistic Level',
+            '面屏材质':'Visor Material','面屏厚度':'Visor Thickness','包胶':'Rubber Coating',
+            'NIJ等级':'NIJ Level','防护等级':'Protection Level','型号':'Model',
+            '枪弹类型':'Ammunition Type','弹头结构':'Bullet Structure','弹头质量':'Bullet Weight',
+            '射击距离':'Shooting Distance','弹速':'Bullet Speed','弹着点间距':'Impact Spacing',
+            '靶后飞溅':'Spalling','孔型':'Hole Type','形状':'Shape','板厚':'Plate Thickness',
+            '可插板尺寸':'Insert Plate Size','前插板尺寸':'Front Plate Size','后插板尺寸':'Back Plate Size',
+            '可定制尺寸':'Customizable Size','可定制颜色':'Customizable Color',
+            '可定制防弹材质':'Customizable Ballistic Material','可定制防弹面积':'Customizable Ballistic Area',
+            '可定制防护面积':'Customizable Protection Area','可定制防刺层材质':'Customizable Stab Material',
+            '规格':'Specification','展开':'Expanded','折叠':'Folded'
+          };
+          var isEn = document.documentElement.lang.startsWith('en');
           // Build regex from known keys
           var keyPattern = new RegExp('(' + knownKeys.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|') + ')[：:]','g');
           // Split by key：boundaries
@@ -204,7 +233,7 @@
           for (var p = 0; p < pairs.length; p++) {
             var bg = p % 2 === 0 ? 'background:var(--bg-light);' : 'background:#fff;';
             html += '<tr style="' + bg + 'border-bottom:1px solid #f0f0f0;">';
-            html += '<td style="padding:12px 16px;font-weight:600;color:var(--primary);width:35%;white-space:nowrap;border-right:3px solid var(--accent);">' + pairs[p][0] + '</td>';
+            html += '<td style="padding:12px 16px;font-weight:600;color:var(--primary);width:35%;white-space:nowrap;border-right:3px solid var(--accent);">' + (isEn && translations[pairs[p][0]] ? translations[pairs[p][0]] : pairs[p][0]) + '</td>';
             html += '<td style="padding:12px 16px;color:var(--text-dark);">' + pairs[p][1] + '</td>';
             html += '</tr>';
           }
