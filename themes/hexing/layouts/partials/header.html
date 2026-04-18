@@ -66,7 +66,7 @@
           {{- range $.Translations -}}
             <a href="{{ .RelPermalink }}" class="lang-switch"
                title="{{ if eq .Lang `zh` }}中文{{ else }}English{{ end }}">
-              🌐 {{ if eq .Lang "zh" }}EN{{ else }}中文{{ end }}
+              🌐 {{ if eq .Lang "zh" }}中文{{ else }}EN{{ end }}
             </a>
           {{- end -}}
         </div>
@@ -115,7 +115,7 @@
     {{- if $.IsTranslated -}}
       <div class="mobile-lang-divider">
         {{- range $.Translations -}}
-          <a href="{{ .RelPermalink }}" class="mobile-link" style="color:var(--accent);">🌐 {{ if eq .Lang "zh" }}English{{ else }}中文{{ end }}</a>
+          <a href="{{ .RelPermalink }}" class="mobile-link" style="color:var(--accent);">🌐 {{ if eq .Lang "zh" }}中文{{ else }}EN{{ end }}</a>
         {{- end -}}
       </div>
     {{- end -}}
