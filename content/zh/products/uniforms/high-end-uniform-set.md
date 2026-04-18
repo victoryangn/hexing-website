@@ -9,9 +9,9 @@ images:
   - "/images/products/fronter/high-end-uniform-set-3.jpg"
   - "/images/products/fronter/high-end-uniform-set-4.png"
   - "/images/products/fronter/high-end-uniform-set-5.jpg"
-specs:
-  - "Fabric: TC6535"
-  - "Color: navy blue green"
+specs: |
+  Fabric: TC6535
+  Color: navy blue green
 supplier: "fronter"
 draft: false
 ---

@@ -9,9 +9,9 @@ images:
   - "/images/products/fronter/728-tactical-suit-3.jpg"
   - "/images/products/fronter/728-tactical-suit-4.jpg"
   - "/images/products/fronter/728-tactical-suit-5.jpg"
-specs:
-  - "Color certificate: SGS，ISO"
-  - "Multiple colors to choose from: Black Tiger Spot/French Jungle/Earth Yellow/Khaki."
+specs: |
+  Color certificate: SGS，ISO
+  Multiple colors to choose from: Black Tiger Spot/French Jungle/Earth Yellow/Khaki.
 supplier: "fronter"
 draft: false
 ---

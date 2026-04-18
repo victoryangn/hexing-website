@@ -9,12 +9,12 @@ images:
   - "/images/products/fronter/hooded-hard-shell-jacket-3.png"
   - "/images/products/fronter/hooded-hard-shell-jacket-4.jpg"
   - "/images/products/fronter/hooded-hard-shell-jacket-5.jpg"
-specs:
-  - "Fabric: Three line grid Futeli Ke Te"
-  - "Ingredients: 100% polyester fiber"
-  - "Weight: 130 grams per square meter (+/-5g)"
-  - "Color: Olive Green"
-  - "Three in one functional composite fabric: windproof, splash proof, and stain resistant"
+specs: |
+  Fabric: Three line grid Futeli Ke Te
+  Ingredients: 100% polyester fiber
+  Weight: 130 grams per square meter (+/-5g)
+  Color: Olive Green
+  Three in one functional composite fabric: windproof, splash proof, and stain resistant
 supplier: "fronter"
 draft: false
 ---

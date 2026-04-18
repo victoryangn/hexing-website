@@ -9,11 +9,11 @@ images:
   - "/images/products/fronter/outdoor-split-tactical-bread-down-jacket-3.png"
   - "/images/products/fronter/outdoor-split-tactical-bread-down-jacket-4.jpg"
   - "/images/products/fronter/outdoor-split-tactical-bread-down-jacket-5.jpg"
-specs:
-  - "Fabric: Mitong grid transparent film"
-  - "Ingredients: 100% polyester fiber"
-  - "Weight: 140 grams per square meter (+/-5g)"
-  - "Color: Light Grey"
+specs: |
+  Fabric: Mitong grid transparent film
+  Ingredients: 100% polyester fiber
+  Weight: 140 grams per square meter (+/-5g)
+  Color: Light Grey
 supplier: "fronter"
 draft: false
 ---

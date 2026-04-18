@@ -9,11 +9,11 @@ images:
   - "/images/products/fronter/tactical-stretch-long-sleeved-shirt-3.jpg"
   - "/images/products/fronter/tactical-stretch-long-sleeved-shirt-4.jpg"
   - "/images/products/fronter/tactical-stretch-long-sleeved-shirt-5.jpg"
-specs:
-  - "Fabric: plain weave elastic+waterproof"
-  - "Ingredients: 95% nylon/5% spandex"
-  - "Weight: 115 grams per square meter"
-  - "Color: Grey Green/Military Green/Khaki"
+specs: |
+  Fabric: plain weave elastic+waterproof
+  Ingredients: 95% nylon/5% spandex
+  Weight: 115 grams per square meter
+  Color: Grey Green/Military Green/Khaki
 supplier: "fronter"
 draft: false
 ---
