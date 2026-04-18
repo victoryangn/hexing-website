@@ -6,7 +6,6 @@ category: "Tactical Jackets"
 images:
   - "/images/products/fronter/hooded-hard-shell-jacket-1.jpg"
   - "/images/products/fronter/hooded-hard-shell-jacket-2.jpg"
-  - "/images/products/fronter/hooded-hard-shell-jacket-3.png"
   - "/images/products/fronter/hooded-hard-shell-jacket-4.jpg"
   - "/images/products/fronter/hooded-hard-shell-jacket-5.jpg"
 specs: |

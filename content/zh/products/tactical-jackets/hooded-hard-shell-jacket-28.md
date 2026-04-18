@@ -6,7 +6,6 @@ category: "冲锋衣"
 images:
   - "/images/products/fronter/hooded-hard-shell-jacket-28-1.jpg"
   - "/images/products/fronter/hooded-hard-shell-jacket-28-2.jpg"
-  - "/images/products/fronter/hooded-hard-shell-jacket-28-3.png"
   - "/images/products/fronter/hooded-hard-shell-jacket-28-4.jpg"
   - "/images/products/fronter/hooded-hard-shell-jacket-28-5.jpg"
 specs: |
