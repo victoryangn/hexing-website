@@ -34,11 +34,8 @@
   <div class="container">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
 
-      {{- /* =========================================
-           LEFT COLUMN: Image Gallery
-           ========================================= */ -}}
+      {{- /* LEFT COLUMN: Image Gallery */ -}}
       <div class="product-gallery">
-        {{- /* Main Image */ -}}
         {{- $mainImage := "" -}}
         {{- with .Params.images -}}
           {{- $mainImage = index . 0 -}}
@@ -48,7 +45,7 @@
           {{- end -}}
         {{- end -}}
 
-        <div id="main-image" style="border-radius:12px;overflow:hidden;background:var(--bg-light);aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid #eee;">
+        <div id="main-image" style="border-radius:12px;overflow:hidden;background:#fff;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid #eee;">
           {{- if $mainImage -}}
             <img src="{{ $mainImage | relURL }}" alt="{{ .Title }}" id="gallery-main"
                  style="width:100%;height:100%;object-fit:contain;padding:20px;">
@@ -60,13 +57,12 @@
           {{- end -}}
         </div>
 
-        {{- /* Thumbnail Gallery */ -}}
         {{- with .Params.images -}}
           {{- if gt (len .) 1 -}}
             <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
               {{- range . -}}
                 <button onclick="document.getElementById('gallery-main').src='{{ . | relURL }}';"
-                        style="width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid #eee;cursor:pointer;padding:0;background:var(--bg-light);transition:border-color 0.2s;"
+                        style="width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid #eee;cursor:pointer;padding:0;background:#fff;transition:border-color 0.2s;"
                         onmouseover="this.style.borderColor='var(--olive)'"
                         onmouseout="this.style.borderColor='#eee'">
                   <img src="{{ . | relURL }}" alt="Thumbnail" style="width:100%;height:100%;object-fit:cover;">
@@ -77,11 +73,9 @@
         {{- end -}}
       </div>
 
-      {{- /* =========================================
-           RIGHT COLUMN: Product Info
-           ========================================= */ -}}
+      {{- /* RIGHT COLUMN: Product Info */ -}}
       <div class="product-info">
-        {{- /* Product Category & Subtitle (title is already in the green header banner) */ -}}
+        {{- /* Category & Subtitle */ -}}
         <div style="margin-bottom:24px;">
           {{- with .Params.category -}}
             <span style="display:inline-block;padding:4px 12px;background:rgba(85,139,47,0.1);color:var(--olive);font-size:13px;font-weight:600;border-radius:4px;margin-bottom:12px;">
@@ -101,189 +95,62 @@
           </div>
         {{- end -}}
 
-        {{- /* Description */ -}}
+        {{- /* Description (from summary param or .Content intro paragraph) */ -}}
         {{- with .Params.summary -}}
           <p style="font-size:16px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</p>
         {{- end -}}
-        {{- with .Content -}}
-          <div class="product-content" style="font-size:15px;line-height:1.8;color:var(--text-dark);margin-bottom:24px;">{{ . }}</div>
-          <style>
-          .product-content > h1:first-child { display:none; }
-          .product-content > h2#specifications,
-          .product-content > h2#specifications + p,
-          .product-content > h2#contact-us,
-          .product-content > h2#contact-us + ul,
-          .product-content > h2#产品规格,
-          .product-content > h2#产品规格 + p,
-          .product-content > h2#联系我们,
-          .product-content > h2#联系我们 + ul { display:none; }
-          </style>
-        {{- end -}}
+
+        {{- /* Hide .Content rendering - specs are handled separately below */ -}}
+        {{- /* We hide .Content because it contains duplicate title + specs in plain text */ -}}
 
         {{- /* =========================================
              Specifications Table
              ========================================= */ -}}
+        {{- /* 
+          Strategy: .Params.specs is truncated by Hugo's YAML parser when specs text contains `key: value` format.
+          Instead, we read the raw specs from the front matter by splitting .RawContent.
+          The raw content between --- markers contains the front matter, and the specs block is there.
+        */ -}}
+        {{- $specsText := "" -}}
         {{- with .Params.specs -}}
+          {{- $specsText = . -}}
+        {{- end -}}
+
+        {{- /* Try to extract full specs from .RawContent front matter */ -}}
+        {{- $rawParts := split .RawContent "---" -}}
+        {{- $fullSpecs := "" -}}
+        {{- range $rawParts -}}
+          {{- if and (strings.Contains . "specs:") (not (strings.Contains . "title:")) -}}
+            {{- /* This is likely the front matter block with specs */ -}}
+            {{- $specBlock := . -}}
+            {{- /* Extract specs value after "specs: |" or "specs: |\n" */ -}}
+            {{- if strings.Contains $specBlock "specs: |" -}}
+              {{- $afterSpecs := index (split $specBlock "specs: |") 1 -}}
+              {{- if $afterSpecs -}}
+                {{- $fullSpecs = strings.TrimSpace $afterSpecs -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- $specsToRender := "" -}}
+        {{- if and $fullSpecs (gt (len $fullSpecs) (len $specsText)) -}}
+          {{- $specsToRender = $fullSpecs -}}
+        {{- else if $specsText -}}
+          {{- $specsToRender = $specsText -}}
+        {{- end -}}
+
+        {{- if $specsToRender -}}
           <div style="margin-bottom:32px;">
             <h3 style="font-size:18px;font-weight:700;color:var(--primary);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent);">
               {{ if $isZh }}产品规格{{ else }}Specifications{{ end }}
             </h3>
-            {{- if reflect.IsMap . -}}
-              <table style="width:100%;border-collapse:collapse;font-size:14px;">
-                {{- range $key, $val := . -}}
-                  <tr style="border-bottom:1px solid #f0f0f0;">
-                    <td style="padding:12px 16px;font-weight:600;color:var(--text-dark);background:var(--bg-light);width:40%;white-space:nowrap;">{{ $key }}</td>
-                    <td style="padding:12px 16px;color:var(--text-muted);">{{ $val }}</td>
-                  </tr>
-                {{- end -}}
-              </table>
-            {{- else if reflect.IsSlice . -}}
-              <table style="width:100%;border-collapse:collapse;font-size:14px;">
-                {{- range . -}}
-                  <tr style="border-bottom:1px solid #f0f0f0;">
-                    <td style="padding:12px 16px;font-weight:600;color:var(--text-dark);background:var(--bg-light);width:40%;white-space:nowrap;">{{ index . 0 }}</td>
-                    <td style="padding:12px 16px;color:var(--text-muted);">{{ index . 1 }}</td>
-                  </tr>
-                {{- end -}}
-              </table>
-            {{- else -}}
-              <div id="specs-table" data-specs="{{ . | jsonify }}"></div>
-              <noscript>
-                <div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;line-height:2;color:var(--text-dark);white-space:pre-line;">{{ . }}</div>
-              </noscript>
-            {{- end -}}
+            <div id="specs-table" data-specs="{{ $specsToRender | jsonify }}"></div>
+            <noscript>
+              <div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;line-height:2;color:var(--text-dark);white-space:pre-line;">{{ $specsToRender }}</div>
+            </noscript>
           </div>
         {{- end -}}
-
-        {{- /* JS to parse specs text into styled table */ -}}
-        <script>
-        (function(){
-          var el = document.getElementById('specs-table');
-          if (!el) return;
-          var raw = el.getAttribute('data-specs') || '';
-          raw = raw.replace(/^"|"$/g, '').replace(/\\n/g, '');
-          if (!raw || raw === '详情请咨询' || raw === 'Contact for details') {
-            el.innerHTML = '<div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;color:var(--text-muted);">' + raw + '</div>';
-            return;
-          }
-          // All known spec keys (Chinese + English), sorted by length desc for greedy matching
-          var knownKeys = [
-            '单件装箱尺寸/外套','大批量装箱尺寸/外套',
-            '单件装箱尺寸','大批量装箱尺寸','盾体展开尺寸','盾体折叠尺寸',
-            '前中长*后中长*肩宽cm','前中长*后中长*肩宽',
-            '可定制防弹材质','可定制防弹面积','可定制防护面积','可定制防刺层材质',
-            '头围尺寸','防弹面积㎡','防弹面积','防护面积','防弹材质','防弹等级',
-            '防弹层材质','防刺层材质','防刺等级','防弹衣材质','防弹衣重量',
-            '防弹衣面积','防弹衣厚度','防弹钢尺寸','防弹钢颜色',
-            '执行标准','面屏防弹等级',
-            '面屏材质','面屏厚度','厚度mm','厚度','重量KGS','重量KG','重量/块','重量',
-            '保质期','喷漆工艺','枪弹类型','弹头结构','弹头质量','射击距离',
-            '弹速','弹着点间距','靶后飞溅','观察窗','包胶','孔型','形状','板厚',
-            '可插板尺寸','前插板尺寸','后插板尺寸','腰围可调节cm',
-            '外套材质','产品尺寸','盾体展开','盾体','盾体折叠','折叠',
-            '材质/工艺','材质','尺寸','颜色','尺码','配件','保险','交期',
-            'NIJ等级','防护等级','型号','视窗尺寸','视窗','前中长','后中长',
-            '可定制尺寸','可定制颜色',
-            // English keys
-            'Front/Back/Shoulder (cm)','Ballistic Layer Material',
-            'Stab-Resistant Layer','Stab Resistance Level',
-            'Outer Shell Material','Available Colors',
-            'Single Pack Size / Shell','Bulk Pack Size / Shell',
-            'Adjustable Waist (cm)','Shield Expanded Size','Shield Folded Size',
-            'Ballistic Material','Ballistic Area (㎡)',
-            'Protection Area','Surface Finish','Ballistic Level',
-            'Head Circumference','Weight (KGS)','Thickness (mm)',
-            'Ballistic Area','Lead Time','Shelf Life','Window Size',
-            'Standard','Accessories','Insurance','Material',
-            'Specifications','Specification',
-            'Front Length','Back Length','Shoulder Width',
-            'Size','Color'
-          ];
-          // Translation map (Chinese key → English display)
-          var translations = {
-            '材质':'Material','材质/工艺':'Material / Process','尺寸':'Size','颜色':'Color','尺码':'Size',
-            '配件':'Accessories','保险':'Insurance','交期':'Lead Time','重量':'Weight','重量KGS':'Weight (KGS)',
-            '重量KG':'Weight (KG)','重量/块':'Weight/pc','厚度mm':'Thickness (mm)','厚度':'Thickness',
-            '防弹材质':'Ballistic Material','防弹等级':'Protection Level','防弹面积㎡':'Ballistic Area (㎡)',
-            '防弹面积':'Ballistic Area','防护面积':'Protection Area','防弹层材质':'Ballistic Layer Material',
-            '防刺层材质':'Stab-resistant Material','防刺等级':'Stab Resistance Level',
-            '执行标准':'Standard','保质期':'Shelf Life','喷漆工艺':'Painting Process',
-            '头围尺寸':'Head Circumference','盾体展开尺寸':'Shield Expanded Size',
-            '盾体折叠尺寸':'Shield Folded Size','盾体展开':'Shield Expanded','盾体折叠':'Shield Folded',
-            '盾体':'Shield Body','视窗尺寸':'Window Size','视窗':'View Window','观察窗':'Observation Window',
-            '前中长':'Front Length','后中长':'Back Length','肩宽':'Shoulder Width','肩宽cm':'Shoulder Width (cm)',
-            '腰围可调节cm':'Waist Adjustable (cm)',
-            '单件装箱尺寸/外套':'Packing Size (Single)','大批量装箱尺寸/外套':'Packing Size (Bulk)',
-            '单件装箱尺寸':'Packing Size (Single)','大批量装箱尺寸':'Packing Size (Bulk)',
-            '外套材质':'Outer Material','产品尺寸':'Product Size','面屏防弹等级':'Visor Ballistic Level',
-            '面屏材质':'Visor Material','面屏厚度':'Visor Thickness','包胶':'Rubber Coating',
-            'NIJ等级':'NIJ Level','防护等级':'Protection Level','型号':'Model',
-            '枪弹类型':'Ammunition Type','弹头结构':'Bullet Structure','弹头质量':'Bullet Weight',
-            '射击距离':'Shooting Distance','弹速':'Bullet Speed','弹着点间距':'Impact Spacing',
-            '靶后飞溅':'Spalling','孔型':'Hole Type','形状':'Shape','板厚':'Plate Thickness',
-            '可插板尺寸':'Insert Plate Size','前插板尺寸':'Front Plate Size','后插板尺寸':'Back Plate Size',
-            '可定制尺寸':'Customizable Size','可定制颜色':'Customizable Color',
-            '可定制防弹材质':'Customizable Ballistic Material','可定制防弹面积':'Customizable Ballistic Area',
-            '可定制防护面积':'Customizable Protection Area','可定制防刺层材质':'Customizable Stab Material',
-            '规格':'Specification','展开':'Expanded','折叠':'Folded'
-          };
-          var isEn = document.documentElement.lang.startsWith('en');
-
-          // Parse specs: find all known key positions, extract values between them
-          // Build regex: (key1|key2|...)[：:]
-          var escapedKeys = knownKeys.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');});
-          var keyPattern = new RegExp('(' + escapedKeys.join('|') + ')[\\s]*[：:]','gm');
-
-          var pairs = [];
-          var match;
-          // Collect all key positions: {key, keyStart (where key text begins), valStart (after colon)}
-          var keyPositions = [];
-          keyPattern.lastIndex = 0;
-          while ((match = keyPattern.exec(raw)) !== null) {
-            keyPositions.push({
-              key: match[1],
-              keyStart: match.index,
-              valStart: match.index + match[0].length
-            });
-          }
-
-          // Extract values: value is text from this key's colon to the next key's start
-          for (var i = 0; i < keyPositions.length; i++) {
-            var valEnd = (i < keyPositions.length - 1) ? keyPositions[i+1].keyStart : raw.length;
-            var val = raw.substring(keyPositions[i].valStart, valEnd).trim();
-            if (keyPositions[i].key && val) {
-              pairs.push([keyPositions[i].key, val]);
-            }
-          }
-
-          // Fallback: if no known keys matched, try generic colon splitting
-          if (pairs.length === 0) {
-            var colonParts = raw.split(/[：:]/);
-            for (var j = 0; j < colonParts.length - 1; j++) {
-              var fk = colonParts[j].trim();
-              var fv = colonParts[j+1] ? colonParts[j+1].trim() : '';
-              if (fk && fv) pairs.push([fk, fv]);
-            }
-          }
-
-          if (pairs.length === 0) {
-            el.innerHTML = '<div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;line-height:2;color:var(--text-dark);white-space:pre-line;">' + raw + '</div>';
-            return;
-          }
-          var html = '<table style="width:100%;border-collapse:collapse;font-size:14px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
-          for (var p = 0; p < pairs.length; p++) {
-            var bg = p % 2 === 0 ? 'background:var(--bg-light);' : 'background:#fff;';
-            var displayKey = pairs[p][0];
-            if (isEn && translations[displayKey]) displayKey = translations[displayKey];
-            html += '<tr style="' + bg + 'border-bottom:1px solid #f0f0f0;">';
-            html += '<td style="padding:12px 16px;font-weight:600;color:var(--primary);width:35%;white-space:nowrap;border-right:3px solid var(--accent);">' + displayKey + '</td>';
-            html += '<td style="padding:12px 16px;color:var(--text-dark);">' + pairs[p][1] + '</td>';
-            html += '</tr>';
-          }
-          html += '</table>';
-          el.innerHTML = html;
-        })();
-        </script>
 
         {{- /* Features List */ -}}
         {{- with .Params.features -}}
@@ -313,39 +180,149 @@
           </div>
         {{- end -}}
 
-        {{- /* =========================================
-             Inquiry Buttons
-             ========================================= */ -}}
+        {{- /* Inquiry Button - ONLY Send Inquiry, no WhatsApp/phone */ -}}
         <div style="padding:24px;background:var(--bg-light);border-radius:12px;border:1px solid #e8e8e8;">
           <p style="margin:0 0 16px;font-size:15px;font-weight:600;color:var(--text-dark);">
             {{ if $isZh }}对此产品感兴趣？{{ else }}Interested in this product?{{ end }}
           </p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}?product={{ .Title | urlquery }}"
-               style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--primary);color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(27,94,32,0.3);transition:all 0.3s;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              {{ if $isZh }}发送询盘{{ else }}Send Inquiry{{ end }}
-            </a>
-            {{- with .Site.Params.whatsapp -}}
-              <a href="https://wa.me/{{ . }}?text={{ if $isZh }}{{ printf "你好，我对这个产品感兴趣：%s" $.Title | urlquery }}{{ else }}{{ printf "Hi, I'm interested in: %s" $.Title | urlquery }}{{ end }}" target="_blank" rel="noopener"
-                 style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:#25D366;color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(37,211,102,0.3);transition:all 0.3s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                WhatsApp
-              </a>
-            {{- end -}}
-            {{- with .Site.Params.phoneLandline -}}
-              <a href="tel:{{ replace . " " "" }}"
-                 style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--olive);color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(85,139,47,0.3);transition:all 0.3s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                {{ . }}
-              </a>
-            {{- end -}}
-          </div>
+          <a href="{{ if $isZh }}/contact/{{ else }}/en/contact/{{ end }}?product={{ .Title | urlquery }}"
+             style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--primary);color:#fff;font-weight:700;border-radius:8px;text-decoration:none;font-size:15px;box-shadow:0 4px 12px rgba(27,94,32,0.3);transition:all 0.3s;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {{ if $isZh }}发送询盘{{ else }}Send Inquiry{{ end }}
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+{{- /* JS to parse specs text into styled table */ -}}
+<script>
+(function(){
+  var el = document.getElementById('specs-table');
+  if (!el) return;
+  var raw = el.getAttribute('data-specs') || '';
+  // Decode JSON string and restore newlines
+  try { raw = JSON.parse(raw); } catch(e) { raw = raw.replace(/^"|"$/g, ''); }
+  raw = raw.replace(/\\n/g, '\n').trim();
+  if (!raw || raw === '详情请咨询' || raw === 'Contact for details') {
+    el.innerHTML = '<div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;color:var(--text-muted);">' + raw + '</div>';
+    return;
+  }
+  // All known spec keys (Chinese + English), sorted by length desc for greedy matching
+  var knownKeys = [
+    '单件装箱尺寸/外套','大批量装箱尺寸/外套',
+    '单件装箱尺寸','大批量装箱尺寸','盾体展开尺寸','盾体折叠尺寸',
+    '前中长*后中长*肩宽cm','前中长*后中长*肩宽',
+    '可定制防弹材质','可定制防弹面积','可定制防护面积','可定制防刺层材质',
+    '头围尺寸','防弹面积㎡','防弹面积','防护面积','防弹材质','防弹等级',
+    '防弹层材质','防刺层材质','防刺等级','防弹衣材质','防弹衣重量',
+    '防弹衣面积','防弹衣厚度','防弹钢尺寸','防弹钢颜色',
+    '执行标准','面屏防弹等级',
+    '面屏材质','面屏厚度','厚度mm','厚度','重量KGS','重量KG','重量/块','重量',
+    '保质期','喷漆工艺','枪弹类型','弹头结构','弹头质量','射击距离',
+    '弹速','弹着点间距','靶后飞溅','观察窗','包胶','孔型','形状','板厚',
+    '可插板尺寸','前插板尺寸','后插板尺寸','腰围可调节cm',
+    '外套材质','产品尺寸','盾体展开','盾体','盾体折叠','折叠',
+    '材质/工艺','材质','尺寸','颜色','尺码','配件','保险','交期',
+    'NIJ等级','防护等级','型号','视窗尺寸','视窗','前中长','后中长',
+    '可定制尺寸','可定制颜色',
+    // English keys
+    'Front/Back/Shoulder (cm)','Ballistic Layer Material',
+    'Stab-Resistant Layer','Stab Resistance Level',
+    'Outer Shell Material','Available Colors',
+    'Single Pack Size / Shell','Bulk Pack Size / Shell',
+    'Adjustable Waist (cm)','Shield Expanded Size','Shield Folded Size',
+    'Ballistic Material','Ballistic Area (㎡)',
+    'Protection Area','Surface Finish','Ballistic Level',
+    'Head Circumference','Weight (KGS)','Thickness (mm)',
+    'Ballistic Area','Lead Time','Shelf Life','Window Size',
+    'Standard','Accessories','Insurance','Material',
+    'Specifications','Specification',
+    'Front Length','Back Length','Shoulder Width',
+    'Size','Color'
+  ];
+  // Translation map
+  var translations = {
+    '材质':'Material','材质/工艺':'Material / Process','尺寸':'Size','颜色':'Color','尺码':'Size',
+    '配件':'Accessories','保险':'Insurance','交期':'Lead Time','重量':'Weight','重量KGS':'Weight (KGS)',
+    '重量KG':'Weight (KG)','重量/块':'Weight/pc','厚度mm':'Thickness (mm)','厚度':'Thickness',
+    '防弹材质':'Ballistic Material','防弹等级':'Protection Level','防弹面积㎡':'Ballistic Area (㎡)',
+    '防弹面积':'Ballistic Area','防护面积':'Protection Area','防弹层材质':'Ballistic Layer Material',
+    '防刺层材质':'Stab-resistant Material','防刺等级':'Stab Resistance Level',
+    '执行标准':'Standard','保质期':'Shelf Life','喷漆工艺':'Painting Process',
+    '头围尺寸':'Head Circumference','盾体展开尺寸':'Shield Expanded Size',
+    '盾体折叠尺寸':'Shield Folded Size','盾体展开':'Shield Expanded','盾体折叠':'Shield Folded',
+    '盾体':'Shield Body','视窗尺寸':'Window Size','视窗':'View Window','观察窗':'Observation Window',
+    '前中长':'Front Length','后中长':'Back Length','肩宽':'Shoulder Width','肩宽cm':'Shoulder Width (cm)',
+    '腰围可调节cm':'Waist Adjustable (cm)',
+    '单件装箱尺寸/外套':'Packing Size (Single)','大批量装箱尺寸/外套':'Packing Size (Bulk)',
+    '单件装箱尺寸':'Packing Size (Single)','大批量装箱尺寸':'Packing Size (Bulk)',
+    '外套材质':'Outer Material','产品尺寸':'Product Size','面屏防弹等级':'Visor Ballistic Level',
+    '面屏材质':'Visor Material','面屏厚度':'Visor Thickness','包胶':'Rubber Coating',
+    'NIJ等级':'NIJ Level','防护等级':'Protection Level','型号':'Model',
+    '枪弹类型':'Ammunition Type','弹头结构':'Bullet Structure','弹头质量':'Bullet Weight',
+    '射击距离':'Shooting Distance','弹速':'Bullet Speed','弹着点间距':'Impact Spacing',
+    '靶后飞溅':'Spalling','孔型':'Hole Type','形状':'Shape','板厚':'Plate Thickness',
+    '可插板尺寸':'Insert Plate Size','前插板尺寸':'Front Plate Size','后插板尺寸':'Back Plate Size',
+    '可定制尺寸':'Customizable Size','可定制颜色':'Customizable Color',
+    '可定制防弹材质':'Customizable Ballistic Material','可定制防弹面积':'Customizable Ballistic Area',
+    '可定制防护面积':'Customizable Protection Area','可定制防刺层材质':'Customizable Stab Material',
+    '规格':'Specification','展开':'Expanded','折叠':'Folded'
+  };
+  var isEn = document.documentElement.lang.startsWith('en');
+
+  // Parse specs: split by newlines first, then each line is "key: value"
+  var pairs = [];
+  var lines = raw.split('\n');
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li].trim();
+    if (!line) continue;
+    // Try to match known key at the start of the line
+    var matched = false;
+    // Sort keys by length descending for greedy match
+    var sortedKeys = knownKeys.slice().sort(function(a,b){ return b.length - a.length; });
+    for (var ki = 0; ki < sortedKeys.length; ki++) {
+      var key = sortedKeys[ki];
+      var prefix = key + ':';
+      var prefixCn = key + '：';
+      if (line.indexOf(prefix) === 0) {
+        pairs.push([key, line.substring(prefix.length).trim()]);
+        matched = true;
+        break;
+      } else if (line.indexOf(prefixCn) === 0) {
+        pairs.push([key, line.substring(prefixCn.length).trim()]);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      // Fallback: generic colon split
+      var colonIdx = line.search(/[：:]/);
+      if (colonIdx > 0) {
+        pairs.push([line.substring(0, colonIdx).trim(), line.substring(colonIdx+1).trim()]);
+      }
+    }
+  }
+
+  if (pairs.length === 0) {
+    el.innerHTML = '<div style="background:var(--bg-light);padding:20px;border-radius:8px;font-size:14px;line-height:2;color:var(--text-dark);white-space:pre-line;">' + raw + '</div>';
+    return;
+  }
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:14px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
+  for (var p = 0; p < pairs.length; p++) {
+    var bg = p % 2 === 0 ? 'background:var(--bg-light);' : 'background:#fff;';
+    var displayKey = pairs[p][0];
+    if (isEn && translations[displayKey]) displayKey = translations[displayKey];
+    html += '<tr style="' + bg + 'border-bottom:1px solid #f0f0f0;">';
+    html += '<td style="padding:12px 16px;font-weight:600;color:var(--primary);width:35%;white-space:nowrap;border-right:3px solid var(--accent);">' + displayKey + '</td>';
+    html += '<td style="padding:12px 16px;color:var(--text-dark);">' + pairs[p][1] + '</td>';
+    html += '</tr>';
+  }
+  html += '</table>';
+  el.innerHTML = html;
+})();
+</script>
 
 {{- /* Responsive styles */ -}}
 <style>

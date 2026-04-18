@@ -13,15 +13,15 @@ images:
   - "/images/products/ccgk/ZS异形道盾PE防弹手持盾牌-1.jpg"
 specs: |
   Ballistic Material: UHMWPE (Polyethylene)
-Size: 850*520mm
-Color: Black, Customizable
-Ballistic Area (㎡): 0.40㎡
-Thickness (mm): 6-7mm
-Ballistic Level: GA3
-Standard: GA 423-2015 Police Ballistic Shield Standard
-Surface Finish: Polyurea coating
-Insurance: Ping An Insurance 3M RMB
-Shelf Life: 8 years
+  Size: 850*520mm
+  Color: Black, Customizable
+  Ballistic Area (㎡): 0.40㎡
+  Thickness (mm): 6-7mm
+  Ballistic Level: GA3
+  Standard: GA 423-2015 Police Ballistic Shield Standard
+  Surface Finish: Polyurea coating
+  Insurance: Ping An Insurance 3M RMB
+  Shelf Life: 8 years
 
 ---
 
