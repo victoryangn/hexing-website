@@ -1,5 +1,4 @@
 ---
-
 title: "FAST SF 防弹头盔"
 description: "FAST SF 防弹头盔 - 深圳市和兴防护科技有限公司专业供应"
 date: 2026-04-18
@@ -14,8 +13,11 @@ images:
   - "/images/products/ccgk/FAST-SF-防弹头盔-3.jpg"
   - "/images/products/ccgk/FAST-SF-防弹头盔-1.jpg"
 specs: |
-  详情请咨询
-
+  盔型：FAST SF
+  材质：芳纶，PE或复合材料
+  尺码：M, L, XL, XXL
+  重量：1.4-1.7kg
+  防护等级：GA2, GA3, NIJ IIIA .44
 ---
 
 # FAST SF 防弹头盔
@@ -24,7 +26,11 @@ FAST SF 防弹头盔由深圳市和兴防护科技有限公司供应。我们提
 
 ## 产品规格
 
-详情请咨询我们
+盔型：FAST SF
+材质：芳纶，PE或复合材料
+尺码：M, L, XL, XXL
+重量：1.4-1.7kg
+防护等级：GA2, GA3, NIJ IIIA .44
 
 ## 联系我们
 
